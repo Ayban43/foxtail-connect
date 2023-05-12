@@ -16,6 +16,7 @@ import BalanceSheetSummary from '../components/BalanceSheetSummary';
 import ForecastedFinancialSummary from '../components/ForecastedFinancialSummary';
 import ExecutiveSummary from '../components/ExecutiveSummary';
 import PreviewModal from '../components/PreviewModal';
+import KpiDisplaySummary from '../components/KpiDisplay';
 
 
 const AddFinancialSummary = () => {
@@ -42,6 +43,9 @@ const AddFinancialSummary = () => {
     const [executiveAnalysis, setExecutiveAnalaysis] = useState("");
     const [keepAnEyeOn, setKeepAnEyeOn] = useState("");
     const [strategicOpportunities, setStrategicOpportunities] = useState("");
+
+    const [kpiDisplayFileUrl, setKpiDisplayFileUrl] = useState("");
+
 
     const [showModal, setShowModal] = useState(false);
 
@@ -95,6 +99,10 @@ const AddFinancialSummary = () => {
 
     const handleStrategicOpportunities = (e) => {
         setStrategicOpportunities(e.target.value);
+    };
+
+    const handleKpiDisplayFileUpload = (url) => {
+        setKpiDisplayFileUrl(url);
     };
 
     // ---------------------------------------------
@@ -153,6 +161,7 @@ const AddFinancialSummary = () => {
             executive_analysis: executiveAnalysis,
             keep_an_eye_on: keepAnEyeOn,
             strategic_opportunities: strategicOpportunities,
+            kpi_display:kpiDisplayFileUrl
         };
 
         // Add the form data to Supabase
@@ -239,7 +248,7 @@ const AddFinancialSummary = () => {
                         <div className="relative bg-white rounded-lg shadow dark:bg-gray-800">
 
                             <div className="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
-                                <h3 className="text-xl font-semibold dark:text-white">
+                                <h3 className="text-xl font-semibold dark:text-white"> 
                                     Add Financial Summary
                                 </h3>
                             </div>
@@ -336,6 +345,7 @@ const AddFinancialSummary = () => {
                                         {activeTab === "cash-flows" && <CashFlowSummary cashFlowFileUrl={cashFlowFileUrl} onFileUpload={handleCashFlowFileUpload} onInputValueChange={handleCashFlowAnalysis} cashFlowAnalysis={cashFlowAnalysis} />}
                                         {activeTab === "forecasted-financial" && <ForecastedFinancialSummary forecastedFinancialFileUrl={forecastedFinancialFileUrl} onFileUpload={handleForecastedFinancialFileUpload} onInputValueChange={handleForecastedFinancialAnalysis} forecastedFinancialAnalysis={forecastedFinancialAnalysis} />}
                                         {activeTab === "executive" && <ExecutiveSummary onInputValueExecutiveChange={handleExecutiveAnalysis} onInputValueKeepAnEyeOnChange={handleKeepAnEyeOn} onInputValueStrategicOpportunitiesChange={handleStrategicOpportunities} executiveAnalysis={executiveAnalysis} keepAnEyeOn={keepAnEyeOn} strategicOpportunities={strategicOpportunities} />}
+                                        {activeTab === "kpi" && <KpiDisplaySummary  kpiDisplayFileUrl={kpiDisplayFileUrl} onFileUpload={handleKpiDisplayFileUpload} />}
 
                                     </div>
                                 </div>
@@ -368,6 +378,7 @@ const AddFinancialSummary = () => {
                     keepAnEyeOn={keepAnEyeOn}
                     strategicOpportunities={strategicOpportunities}
                     forecastedFinancialFileUrl={forecastedFinancialFileUrl}
+                    kpiDisplayFileUrl={kpiDisplayFileUrl}
                     forecastedFinancialAnalysis={forecastedFinancialAnalysis}
                     onClose={handleCloseModal}
                 />

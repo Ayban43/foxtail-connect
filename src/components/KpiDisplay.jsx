@@ -6,11 +6,9 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const ForecastedFinancialSummary = ({
-  forecastedFinancialFileUrl,
+const KpiDisplaySummary = ({
+  kpiDisplayFileUrl,
   onFileUpload,
-  forecastedFinancialFileAnalysis,
-  onInputValueChange,
 }) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -20,7 +18,7 @@ const ForecastedFinancialSummary = ({
     setLoading(true);
     const { error } = await supabase.storage
       .from("summary_files")
-      .remove([forecastedFinancialFileUrl.replace(supabase.storageUrl + "/object/public/summary_files/", "")]);
+      .remove([kpiDisplayFileUrl.replace(supabase.storageUrl + "/object/public/summary_files/", "")]);
 
     if (error) {
       console.error(error);
@@ -44,7 +42,7 @@ const ForecastedFinancialSummary = ({
 
     const { data, error } = await supabase.storage
       .from("summary_files")
-      .upload("forecasted_financial/" + uuidv4(), file, { public: true });
+      .upload("kpi_display/" + uuidv4(), file, { public: true });
 
     if (error) {
       console.error(error);
@@ -64,10 +62,10 @@ const ForecastedFinancialSummary = ({
   }
 
   useEffect(() => {
-    if (forecastedFinancialFileUrl) {
+    if (kpiDisplayFileUrl) {
       const getNumPages = async () => {
         try {
-          const pdf = await fetch(forecastedFinancialFileUrl);
+          const pdf = await fetch(kpiDisplayFileUrl);
           const pdfBlob = await pdf.blob();
           const pdfUrl = URL.createObjectURL(pdfBlob);
           const pdfDocument = await pdfjs.getDocument(pdfUrl).promise;
@@ -81,11 +79,11 @@ const ForecastedFinancialSummary = ({
 
       getNumPages();
     }
-  }, [forecastedFinancialFileUrl]);
+  }, [kpiDisplayFileUrl]);
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Forecasted Financials</h2>
+      <h2 className="text-2xl font-bold mb-4">KPI Display</h2>
 
       <div
         className="mb-4"
@@ -119,11 +117,11 @@ const ForecastedFinancialSummary = ({
             <LoadingSpinner />
           ) : (
             <>
-              {forecastedFinancialFileUrl ? (
+              {kpiDisplayFileUrl ? (
                 <>
                   <div className="pdf-preview flex">
                     <Document
-                      file={forecastedFinancialFileUrl}
+                      file={kpiDisplayFileUrl}
                       onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                       className={"flex"}
                     >
@@ -171,7 +169,7 @@ const ForecastedFinancialSummary = ({
           />
         </label>
 
-        {forecastedFinancialFileUrl && (
+        {kpiDisplayFileUrl && (
           <div className="mt-2 flex items-center justify-center">
             <button
               className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition-colors focus:outline-none"
@@ -185,21 +183,11 @@ const ForecastedFinancialSummary = ({
       </div>
 
       <div className="mb-4">
-        <label htmlFor="swift-analysis" className="block font-medium mb-2">
-          Swift Analysis
-        </label>
-        <textarea
-          id="swift-analysis"
-          className="border border-gray-400 rounded w-full p-2"
-          rows={4}
-          value={forecastedFinancialFileAnalysis}
-          onChange={onInputValueChange}
-          placeholder="Enter text"
-        />
+
       </div>
     </div>
   );
 };
 
-export default ForecastedFinancialSummary;
+export default KpiDisplaySummary;
 

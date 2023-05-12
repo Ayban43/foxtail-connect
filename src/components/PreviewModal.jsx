@@ -1,11 +1,127 @@
-import React from 'react'
+import React, { useState } from 'react'
 import footerLogo from "../footerLogo.png"
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PreviewModal = (props) => {
+
+    console.log("profitLoss", props.profitLossUrl);
+    // console.log("bal sheet",props.balanceSheetFileUrl);
+    const [profitLossNumPages, setProfitLossNumPages] = useState(null);
+    const [balanceSheetNumPages, setBalanceSheetNumPages] = useState(null);
+    const [cashFlowNumPages, setCashFlowNumPages] = useState(null);
+    const [forecastedFinancialNumPages, setForecastedFinancialNumPages] = useState(null);
+    const [kpiDisplayNumPages, setKpiDisplayNumPages] = useState(null);
 
     const capitalizeFirst = str => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     };
+
+    //PRofit loss -----------------------------------------
+
+    const profitLossOnDocumentLoadSuccess = ({ numPages }) => {
+        setProfitLossNumPages(numPages);
+    };
+
+    const [profitLossCurrentPage, setProfitLossCurrentPage] = useState(1);
+
+    const profitLossGoToNextPage = () => {
+        if (profitLossCurrentPage < profitLossNumPages) {
+            setProfitLossCurrentPage(profitLossCurrentPage + 1);
+        }
+    };
+
+    const profitLossGoToPreviousPage = () => {
+        if (profitLossCurrentPage > 1) {
+            setProfitLossCurrentPage(profitLossCurrentPage - 1);
+        }
+    };
+
+    //Balance Sheet -----------------------------------------
+
+    const balanceSheetOnDocumentLoadSuccess = ({ numPages }) => {
+        setBalanceSheetNumPages(numPages);
+    };
+
+    const [balanceSheetCurrentPage, setBalanceSheetCurrentPage] = useState(1);
+
+    const balanceSheetGoToNextPage = () => {
+        if (balanceSheetCurrentPage < balanceSheetNumPages) {
+            setBalanceSheetCurrentPage(balanceSheetCurrentPage + 1);
+        }
+    };
+
+    const balanceSheetGoToPreviousPage = () => {
+        if (balanceSheetCurrentPage > 1) {
+            setBalanceSheetCurrentPage(balanceSheetCurrentPage - 1);
+        }
+    };
+
+    //Cash Flow -----------------------------------------
+
+    const cashFlowOnDocumentLoadSuccess = ({ numPages }) => {
+        setCashFlowNumPages(numPages);
+    };
+
+    const [cashFlowCurrentPage, setCashFlowCurrentPage] = useState(1);
+
+    const cashFlowGoToNextPage = () => {
+        if (cashFlowCurrentPage < cashFlowNumPages) {
+            setCashFlowCurrentPage(cashFlowCurrentPage + 1);
+        }
+    };
+
+    const cashFlowGoToPreviousPage = () => {
+        if (cashFlowCurrentPage > 1) {
+            setCashFlowCurrentPage(cashFlowCurrentPage - 1);
+        }
+    };
+
+    //Forecasted Financial-----------------------------------------
+
+    const forecastedFinancialOnDocumentLoadSuccess = ({ numPages }) => {
+        setForecastedFinancialNumPages(numPages);
+    };
+
+    const [forecastedFinancialCurrentPage, setForecastedFinancialCurrentPage] = useState(1);
+
+    const forecastedFinancialGoToNextPage = () => {
+        if (forecastedFinancialCurrentPage < forecastedFinancialNumPages) {
+            setForecastedFinancialCurrentPage(forecastedFinancialCurrentPage + 1);
+        }
+    };
+
+    const forecastedFinancialGoToPreviousPage = () => {
+        if (forecastedFinancialCurrentPage > 1) {
+            setForecastedFinancialCurrentPage(forecastedFinancialCurrentPage - 1);
+        }
+    };
+
+    //KPI Display-----------------------------------------
+
+    const kpiDisplayOnDocumentLoadSuccess = ({ numPages }) => {
+        setKpiDisplayNumPages(numPages);
+    };
+
+    const [kpiDisplayCurrentPage, setKpiDisplayCurrentPage] = useState(1);
+
+    const kpiDisplayGoToNextPage = () => {
+        if (kpiDisplayCurrentPage < kpiDisplayNumPages) {
+            setKpiDisplayCurrentPage(kpiDisplayCurrentPage + 1);
+        }
+    };
+
+    const kpiDisplayGoToPreviousPage = () => {
+        if (kpiDisplayCurrentPage > 1) {
+            setKpiDisplayCurrentPage(kpiDisplayCurrentPage - 1);
+        }
+    };
+
+
+
+
+
 
     return (
         <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -26,54 +142,16 @@ const PreviewModal = (props) => {
                         </div>
 
                         <div className="section flex-1 justify-center flex-wrap">
-                            <hr className="my-5 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
+                            <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                             <div className="flex justify-center">
                                 <span className="font-medium text-2xl">{props.clientName} {capitalizeFirst(props.frequency)} Financial Report </span>
                             </div>
                             <div className="flex justify-center">
                                 <span className="font-normal text-xl">{props.periodCovered}</span>
                             </div>
-                            <hr className="my-5 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
+                            <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                         </div>
 
-                        <div className="flex justify-start items-end">
-                            <img className="w-20" src={footerLogo}></img>
-                        </div>
-                    </div>
-
-                    <div className="page h-[297mm] w-[210mm] p-6 flex flex-col  border-b-slate-700 border-4">
-                        <h2 className="text-xl font-semibold">Table of Contents</h2>
-                        <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
-                        <div className="section flex-1 mt-2 font-sans">
-                            <p className="tracking-wide text-sm">
-                                We, at Foxtail Financial LLC, want to extend our heartfelt congratulations to you on your commitment to
-                                achieving financial health and success. Your dedication and perseverance have led to significant strides in
-                                your business’s journey and we are proud to be a part of your team as you continue to grow.
-                                <br></br>
-                                <br></br>
-                                As you delve into this financial report, we encourage you to keep an open mind, ask questions, and consider
-                                the insights and recommendations provided herein. Together, we can work towards achieving your objectives
-                                and securing a brighter future.
-
-                            </p>
-                            <br></br>
-                            <div className="grid gap-1 mb-10">
-                                <span className="text-sm">Warm regards, </span>
-                                <span className="font-semibold text-3xl">Zack Goldglantz </span>
-                                <span className="">CEO, Foxtail Financial LLC </span>
-                            </div>
-
-                            <div className="grid gap-1 text-lg font-medium">
-                                <span>p. 3 <span className="ml-2">Profit &amp; Loss Statement</span></span>
-                                <span>p. 4 <span className="ml-2">Balance Sheet</span></span>
-                                <span>p. 5 <span className="ml-2">Statement of Cash Flows</span></span>
-                                <span>p. 6 <span className="ml-2">KPI Display</span></span>
-                                <span>p. 7 <span className="ml-2">Forecasted Financials</span></span>
-                                <span>p. 8 <span className="ml-2">Executive Summary</span></span>
-                                <span>p. 9 <span className="ml-2">Additional Resources</span></span>
-                            </div>
-                        </div>
-                        <hr className="my-5 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                         <div className="flex justify-start items-end">
                             <img className="w-20" src={footerLogo}></img>
                         </div>
@@ -83,18 +161,48 @@ const PreviewModal = (props) => {
                         <h2 className="text-xl font-semibold">Profit & Loss Statement</h2>
                         <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
                         <div className="section flex-1 mt-2 font-sans flex justify-center">
-                            <img className="max-h-[700px]" src={props.profitLossUrl}>
-                            </img>
+                            <div>
+                                <Document
+                                    file={props.profitLossUrl}
+                                    onLoadSuccess={profitLossOnDocumentLoadSuccess}
+
+                                >
+                                    {profitLossNumPages && <Page pageNumber={profitLossCurrentPage} renderTextLayer={false} height={800} />}
+                                </Document>
+                                <div className="flex justify-between text-xs text-orange-700">
+                                    {profitLossCurrentPage > 1 && (
+                                        <span onClick={profitLossGoToPreviousPage} className="cursor-pointer flex border-b-2 border-orange-700">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
+                                            </svg>
+                                            Previous Page
+                                        </span>
+                                    )}
+                                    {profitLossCurrentPage < profitLossNumPages && (
+                                        <span onClick={profitLossGoToNextPage} className="cursor-pointer flex border-b-2 border-orange-700">
+                                            Next Page
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                                            </svg>
+
+                                        </span>
+                                    )}
+
+                                    <p className="flex justify-center">Current Page: {profitLossCurrentPage} / {profitLossNumPages}</p>
+                                </div>
+
+                            </div>
                         </div>
-                        <div className="section mt-2 font-sans flex-1 justify-start">
+                        <div className="section mt-2 font-sans flex-1 justify-start text-sm">
                             <span className="font-medium ">Swift Analysis</span>
 
-                            <p className="bg-slate-50 p-2 max-h-[150px] overflow-y-auto">
+                            <p className="bg-slate-50 p-2 max-h-[100px] overflow-y-auto">
                                 {props.profitLossAnalysis}
                             </p>
 
                         </div>
-                        <hr className="my-5 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
+                        <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                         <div className="flex justify-start items-end">
                             <img className="w-20" src={footerLogo}></img>
                         </div>
@@ -105,18 +213,47 @@ const PreviewModal = (props) => {
                         <h2 className="text-xl font-semibold">Balance Sheet</h2>
                         <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
                         <div className="section flex-1 mt-2 font-sans flex justify-center">
-                            <img className="max-h-[700px]" src={props.balanceSheetFileUrl}>
-                            </img>
+                            <div>
+                                <Document
+                                    file={props.balanceSheetFileUrl}
+                                    onLoadSuccess={balanceSheetOnDocumentLoadSuccess}
+                                >
+                                    {balanceSheetNumPages && <Page pageNumber={balanceSheetCurrentPage} renderTextLayer={false} height={800} />}
+                                </Document>
+                                <div className="flex justify-between text-xs text-orange-700">
+                                    {balanceSheetCurrentPage > 1 && (
+                                        <span onClick={balanceSheetGoToPreviousPage} className="cursor-pointer flex border-b-2 border-orange-700 ">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
+                                            </svg>
+                                            Previous Page
+                                        </span>
+                                    )}
+                                    {balanceSheetCurrentPage < balanceSheetNumPages && (
+                                        <span onClick={balanceSheetGoToNextPage} className="cursor-pointer flex border-b-2 border-orange-700">
+                                            Next Page
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                                            </svg>
+
+                                        </span>
+                                    )}
+
+                                    <p className="flex justify-center">Current Page: {balanceSheetCurrentPage} / {balanceSheetNumPages}</p>
+                                </div>
+
+                            </div>
                         </div>
                         <div className="section mt-2 font-sans flex-1 justify-start">
                             <span className="font-medium ">Swift Analysis</span>
 
-                            <p className="bg-slate-50 p-2 max-h-[150px] overflow-y-auto">
+                            <p className="bg-slate-50 p-2 max-h-[100px] overflow-y-auto">
                                 {props.balanceSheetAnalysis}
                             </p>
 
                         </div>
-                        <hr className="my-5 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
+                        <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                         <div className="flex justify-start items-end">
                             <img className="w-20" src={footerLogo}></img>
                         </div>
@@ -126,18 +263,90 @@ const PreviewModal = (props) => {
                         <h2 className="text-xl font-semibold">Statement of Cash Flows</h2>
                         <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
                         <div className="section flex-1 mt-2 font-sans flex justify-center">
-                            <img className="max-h-[700px]" src={props.cashFlowFileUrl}>
-                            </img>
+                            <div>
+                                <Document
+                                    file={props.cashFlowFileUrl}
+                                    onLoadSuccess={cashFlowOnDocumentLoadSuccess}
+                                >
+                                    {cashFlowNumPages && <Page pageNumber={cashFlowCurrentPage} renderTextLayer={false} height={800} />}
+                                </Document>
+                                <div className="flex justify-between text-xs text-orange-700">
+                                    {cashFlowCurrentPage > 1 && (
+                                        <span onClick={cashFlowGoToPreviousPage} className="cursor-pointer flex border-b-2 border-orange-700 ">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
+                                            </svg>
+                                            Previous Page
+                                        </span>
+                                    )}
+                                    {cashFlowCurrentPage < cashFlowNumPages && (
+                                        <span onClick={cashFlowGoToNextPage} className="cursor-pointer flex border-b-2 border-orange-700">
+                                            Next Page
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                                            </svg>
+
+                                        </span>
+                                    )}
+
+                                    <p className="flex justify-center">Current Page: {cashFlowCurrentPage} / {cashFlowNumPages}</p>
+                                </div>
+
+                            </div>
                         </div>
                         <div className="section mt-2 font-sans flex-1 justify-start">
                             <span className="font-medium ">Swift Analysis</span>
 
-                            <p className="bg-slate-50 p-2 max-h-[150px] overflow-y-auto">
+                            <p className="bg-slate-50 p-2 max-h-[100px] overflow-y-auto">
                                 {props.cashFlowAnalysis}
                             </p>
 
                         </div>
-                        <hr className="my-5 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
+                        <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
+                        <div className="flex justify-start items-end">
+                            <img className="w-20" src={footerLogo}></img>
+                        </div>
+                    </div>
+
+                    <div className="page h-[297mm] w-[210mm] p-6 flex flex-col justify-betwee  border-b-slate-700 border-4">
+                        <h2 className="text-xl font-semibold">KPI Display</h2>
+                        <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
+                        <div className="section flex-1 mt-2 font-sans flex justify-center">
+                            <div>
+                                <Document
+                                    file={props.kpiDisplayFileUrl}
+                                    onLoadSuccess={kpiDisplayOnDocumentLoadSuccess}
+                                >
+                                    {kpiDisplayNumPages && <Page pageNumber={kpiDisplayCurrentPage} renderTextLayer={false} height={800} />}
+                                </Document>
+                                <div className="flex justify-between text-xs text-orange-700">
+                                    {kpiDisplayCurrentPage > 1 && (
+                                        <span onClick={kpiDisplayGoToPreviousPage} className="cursor-pointer flex border-b-2 border-orange-700 ">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
+                                            </svg>
+                                            Previous Page
+                                        </span>
+                                    )}
+                                    {kpiDisplayCurrentPage < kpiDisplayNumPages && (
+                                        <span onClick={kpiDisplayGoToNextPage} className="cursor-pointer flex border-b-2 border-orange-700">
+                                            Next Page
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                                            </svg>
+
+                                        </span>
+                                    )}
+
+                                    <p className="flex justify-center">Current Page: {kpiDisplayCurrentPage} / {kpiDisplayNumPages}</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    
+                        <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                         <div className="flex justify-start items-end">
                             <img className="w-20" src={footerLogo}></img>
                         </div>
@@ -147,18 +356,47 @@ const PreviewModal = (props) => {
                         <h2 className="text-xl font-semibold">Forecasted Financials</h2>
                         <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
                         <div className="section flex-1 mt-2 font-sans flex justify-center">
-                            <img className="max-h-[700px]" src={props.forecastedFinancialFileUrl}>
-                            </img>
+                            <div>
+                                <Document
+                                    file={props.forecastedFinancialFileUrl}
+                                    onLoadSuccess={forecastedFinancialOnDocumentLoadSuccess}
+                                >
+                                    {forecastedFinancialNumPages && <Page pageNumber={forecastedFinancialCurrentPage} renderTextLayer={false} height={800} />}
+                                </Document>
+                                <div className="flex justify-between text-xs text-orange-700">
+                                    {forecastedFinancialCurrentPage > 1 && (
+                                        <span onClick={forecastedFinancialGoToPreviousPage} className="cursor-pointer flex border-b-2 border-orange-700 ">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
+                                            </svg>
+                                            Previous Page
+                                        </span>
+                                    )}
+                                    {forecastedFinancialCurrentPage < forecastedFinancialNumPages && (
+                                        <span onClick={forecastedFinancialGoToNextPage} className="cursor-pointer flex border-b-2 border-orange-700">
+                                            Next Page
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                                            </svg>
+
+                                        </span>
+                                    )}
+
+                                    <p className="flex justify-center">Current Page: {forecastedFinancialCurrentPage} / {forecastedFinancialNumPages}</p>
+                                </div>
+
+                            </div>
                         </div>
                         <div className="section mt-2 font-sans flex-1 justify-start">
                             <span className="font-medium ">Swift Analysis</span>
 
-                            <p className="bg-slate-50 p-2 max-h-[150px] overflow-y-auto">
+                            <p className="bg-slate-50 p-2 max-h-[100px] overflow-y-auto">
                                 {props.forecastedFinancialAnalysis}
                             </p>
 
                         </div>
-                        <hr className="my-5 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
+                        <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                         <div className="flex justify-start items-end">
                             <img className="w-20" src={footerLogo}></img>
                         </div>
@@ -170,7 +408,7 @@ const PreviewModal = (props) => {
                         <div className="section mt-10 font-sans flex-1 justify-start">
                             <span className="font-medium ">Analysis</span>
 
-                            <p className="bg-slate-50 p-2 max-h-[150px] overflow-y-auto">
+                            <p className="bg-slate-50 p-2 max-h-[100px] overflow-y-auto">
                                 {props.executiveAnalysis}
                             </p>
 
@@ -179,7 +417,7 @@ const PreviewModal = (props) => {
                         <div className="section mt-2 font-sans flex-1 justify-start">
                             <span className="font-medium ">Keep An Eye On</span>
 
-                            <p className="bg-slate-50 p-2 max-h-[150px] overflow-y-auto">
+                            <p className="bg-slate-50 p-2 max-h-[100px] overflow-y-auto">
                                 {props.keepAnEyeOn}
                             </p>
 
@@ -188,12 +426,12 @@ const PreviewModal = (props) => {
                         <div className="section mt-2 font-sans flex-1 justify-start">
                             <span className="font-medium ">Strategic Opportunities</span>
 
-                            <p className="bg-slate-50 p-2 max-h-[150px] overflow-y-auto">
+                            <p className="bg-slate-50 p-2 max-h-[100px] overflow-y-auto">
                                 {props.strategicOpportunities}
                             </p>
 
                         </div>
-                        <hr className="my-5 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
+                        <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                         <div className="flex justify-start items-end">
                             <img className="w-20" src={footerLogo}></img>
                         </div>
@@ -239,7 +477,7 @@ const PreviewModal = (props) => {
                             </span>
 
                         </div>
-                        <hr className="my-5 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
+                        <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                         <div className="flex justify-start items-end">
                             <img className="w-20" src={footerLogo}></img>
                         </div>
@@ -247,7 +485,7 @@ const PreviewModal = (props) => {
 
                 </div>
             </div>
-        </div>
+        </div >
 
     );
 }
