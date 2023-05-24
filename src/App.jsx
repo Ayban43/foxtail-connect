@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Login, Dashboard, Client, AddClient } from './pages';
+// import { Login, Dashboard } from './pages';
+import { Dashboard } from './pages/Dashboard';
+import { Client, AddClient } from './pages/Client';
+import { Login } from './pages/Login';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
-import ErrorPage from './pages/ErrorPage';
+import { ErrorPage } from './pages/Error/';
 import Sidebar from './components/Sidebar';
 import supabase from './config/supabaseClient';
-import FinancialSummary from './pages/FinancialSummary';
-import LoadingSpinner from './components/LoadingSpinner';
-import AddFinancialSummary from './pages/AddFinancialSummary';
+import { FinancialSummary, AddFinancialSummary } from './pages/FinancialSummary';
+import { FinancialSummaryClient, ViewFinancialSummaryClient } from './pages/FinancialSummaryClient';
+import LoadingSpinner from './components/UI/LoadingSpinner';
+import { OnBoardingChecklist } from './pages/OnBoardingChecklist';
 
 const App = () => {
   const navigate = useNavigate()
@@ -77,15 +81,18 @@ const App = () => {
       <Routes>
         {userSession && isAdmin === true ? (
           <>
-            <Route path={'/'} element={<><Sidebar  isAdmin={isAdmin} /><Dashboard isAdmin={isAdmin} /></>} />
-            <Route path={'/client'} element={<><Sidebar  isAdmin={isAdmin} /><Client  isAdmin={isAdmin}/></>} />
-            <Route path={'/client/add'} element={<><Sidebar  isAdmin={isAdmin} /><AddClient isAdmin={isAdmin} /></>} />
-            <Route path={'/financial-summary/add'} element={<><Sidebar  isAdmin={isAdmin} /><AddFinancialSummary isAdmin={isAdmin} /></>} />
-            <Route path={'/financial-summary'} element={<><Sidebar isAdmin={isAdmin} /><FinancialSummary  isAdmin={isAdmin} /></>} />
+            <Route path={'/'} element={<><Sidebar isAdmin={isAdmin} /><Dashboard isAdmin={isAdmin} /></>} />
+            <Route path={'/client'} element={<><Sidebar isAdmin={isAdmin} /><Client isAdmin={isAdmin} /></>} />
+            <Route path={'/client/add'} element={<><Sidebar isAdmin={isAdmin} /><AddClient isAdmin={isAdmin} /></>} />
+            <Route path={'/financial-summary/add'} element={<><Sidebar isAdmin={isAdmin} /><AddFinancialSummary isAdmin={isAdmin} /></>} />
+            <Route path={'/financial-summary'} element={<><Sidebar isAdmin={isAdmin} /><FinancialSummary isAdmin={isAdmin} /></>} />
           </>
         ) : userSession && isAdmin === false ? (
           <>
-            <Route path={'/'} element={<><Sidebar isAdmin={isAdmin} /><FinancialSummary  /></>} />
+            <Route path={'/'} element={<><Sidebar isAdmin={isAdmin} /><FinancialSummaryClient /></>} />
+            <Route path={'/financial-summary'} element={<><Sidebar isAdmin={isAdmin} /><FinancialSummaryClient /></>} />
+            <Route path={'/on-boarding-checklist'} element={<><Sidebar isAdmin={isAdmin} /><OnBoardingChecklist /></>} />
+            <Route path={'/financial-summary/:id'} element={<><Sidebar isAdmin={isAdmin} /><ViewFinancialSummaryClient /></>} />
           </>
         ) : (
           <>

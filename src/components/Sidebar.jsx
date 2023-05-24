@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import logo from "../logo.png"
-import profile from "./profile.png"
+import logo from "../assets/logo.png"
+import profile from "../assets/profile.png"
 import supabase from '../config/supabaseClient';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,7 +48,7 @@ const Sidebar = ({ setToken, isAdmin }) => {
                 <div>
                   <button onClick={toggleDropdown} type="button" className="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                     <span className="sr-only">Open user menu</span>
-                    <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo"></img>
+                    <img className="w-8 h-8 rounded-full" src={profile} alt="user photo"></img>
                   </button>
                   {showMenuDropDown &&
 
@@ -137,7 +137,7 @@ const Sidebar = ({ setToken, isAdmin }) => {
                       <svg className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd"></path></svg>
                       <span className="ml-3">TBA</span>
                     </a>
-                    <a href="#"  className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700">
+                    <a href="#" className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700">
                       <svg className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg>
                       <span className="ml-3">TBA</span>
                     </a>
@@ -156,18 +156,37 @@ const Sidebar = ({ setToken, isAdmin }) => {
         </aside >
 
         :
-
-
+        //NOT ADMIN ----------------------------------------------------------------------------------------------
         <aside id="sidebar" className="fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 w-64 h-full pt-16 font-normal duration-75 lg:flex transition-width" aria-label="Sidebar">
           <div className="relative flex flex-col flex-1 min-h-0 pt-0 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
               <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                 <ul className="pb-2 space-y-2">
                   <li>
-                    <Link to="/financial-summary" className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700 ">
+                    <NavLink
+                      exact={true.toString()}
+                      to="/financial-summary"
+                      className={({ isActive }) =>
+                        "flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-orange-100 group dark:text-gray-200 dark:hover:bg-gray-700" + (isActive ? "text-blue-700 font-semibold bg-orange-200" : "")
+                      }
+                    >
                       <svg className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd"></path></svg>
                       <span className="ml-3">Financial Summary</span>
-                    </Link>
+                    </NavLink>
+                  </li >
+                  <li>
+                    <NavLink
+                      exact={true.toString()}
+                      to="/on-boarding-checklist"
+                      className={({ isActive }) =>
+                        "flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-orange-100 group dark:text-gray-200 dark:hover:bg-gray-700" + (isActive ? "text-blue-700 font-semibold bg-orange-200" : "")
+                      }
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="#6e6a6a" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#fff" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
+                      </svg>
+                      <span className="ml-3">On-boarding Checklist</span>
+                    </NavLink>
                   </li >
                 </ul >
               </div >
