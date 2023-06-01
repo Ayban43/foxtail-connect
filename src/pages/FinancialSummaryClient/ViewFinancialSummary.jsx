@@ -260,7 +260,7 @@ const ViewFinancialSummaryClient = () => {
                                                 className="flex items-center justify-center bg-slate-200 rounded-full w-96 h-96"
                                                 style={{
                                                     borderRadius: "50%",
-                                                    backgroundImage: `url(${props.clientLogo})`,
+                                                    backgroundImage: `url(${companyLogo})`,
                                                     backgroundSize: "contain",
                                                     backgroundRepeat: "no-repeat",
                                                     backgroundPosition: "center"
