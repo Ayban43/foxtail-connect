@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Frequency = ({ onChange }) => {
+const Frequency = ({ onChange, frequency }) => {
   return (
     <div>
       <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
@@ -11,8 +11,9 @@ const Frequency = ({ onChange }) => {
             type="radio"
             tabIndex="-1"
             name="option"
-            value="annual"
+            value="Annual"
             onChange={onChange}
+            checked={frequency === 'Annual'}
           />
 
           <label
@@ -31,8 +32,9 @@ const Frequency = ({ onChange }) => {
             type="radio"
             tabIndex="-1"
             name="option"
-            value="monthly"
+            value="Monthly"
             onChange={onChange}
+            checked={frequency === 'Monthly'}
           />
 
           <label
@@ -51,8 +53,9 @@ const Frequency = ({ onChange }) => {
             type="radio"
             tabIndex="-1"
             name="option"
-            value="quarterly"
+            value="Quarterly"
             onChange={onChange}
+            checked={frequency === 'Quarterly'}
           />
 
           <label

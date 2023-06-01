@@ -156,7 +156,8 @@ const AddFinancialSummary = () => {
             executive_analysis: executiveAnalysis,
             keep_an_eye_on: keepAnEyeOn,
             strategic_opportunities: strategicOpportunities,
-            kpi_display_file_url: kpiDisplayFileUrl
+            kpi_display_file_url: kpiDisplayFileUrl,
+            frequency: frequency
         };
 
         // Add the form data to Supabase
@@ -201,12 +202,12 @@ const AddFinancialSummary = () => {
     };
 
     useEffect(() => {
-        if (frequency === "annual") {
+        if (frequency === "Annual") {
             setPeriodCovered(selectedAnnual);
-        } else if (frequency === "monthly") {
+        } else if (frequency === "Monthly") {
             const monthlyText = selectedMonth + ", " + selectedYear;
             setPeriodCovered(monthlyText);
-        } else if (frequency === "quarterly") {
+        } else if (frequency === "Quarterly") {
             const quarterText = selectedQuarter + ", " + selectedQuarterYear
             setPeriodCovered(quarterText)
         }
@@ -260,20 +261,20 @@ const AddFinancialSummary = () => {
 
                                         <div className="w-full p-5 bg-slate-100 rounded-lg">
                                             <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Report Frequency</label>
-                                            <Frequency onChange={(e) => setFrequency(e.target.value)} />
+                                            <Frequency frequency={frequency} onChange={(e) => setFrequency(e.target.value)} />
                                         </div>
 
                                         <div className="w-full p-5 bg-slate-100 rounded-lg">
                                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Period Covered:</label>
-                                            {frequency === 'annual' && (
+                                            {frequency === 'Annual' && (
                                                 <YearPicker defaultYear={selectedAnnual} onChange={handleAnnualChange} />
                                             )}
 
-                                            {frequency === 'quarterly' && (
+                                            {frequency === 'Quarterly' && (
                                                 <QuarterPicker onChange={handleQuarterChange} />
                                             )}
 
-                                            {frequency === 'monthly' && (
+                                            {frequency === 'Monthly' && (
                                                 <MonthPicker
                                                     defaultYear={selectedYear}
                                                     defaultMonth={selectedMonth}

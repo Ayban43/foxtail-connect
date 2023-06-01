@@ -256,9 +256,16 @@ const ViewFinancialSummaryClient = () => {
                                     <div className="page h-[297mm] w-[210mm] p-6 flex flex-col border-b-slate-700 border-4">
 
                                         <div className="section flex-1 justify-center flex">
-                                            <div className="flex items-center justify-center bg-slate-200 rounded-full w-96 h-96">
-                                                <img src={companyLogo} alt="company logo"></img>
-                                            </div>
+                                            <div
+                                                className="flex items-center justify-center bg-slate-200 rounded-full w-96 h-96"
+                                                style={{
+                                                    borderRadius: "50%",
+                                                    backgroundImage: `url(${props.clientLogo})`,
+                                                    backgroundSize: "contain",
+                                                    backgroundRepeat: "no-repeat",
+                                                    backgroundPosition: "center"
+                                                }}
+                                            ></div>
                                         </div>
 
                                         <div className="section flex-1 justify-center flex-wrap">
@@ -272,6 +279,46 @@ const ViewFinancialSummaryClient = () => {
                                             <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                                         </div>
 
+                                        <div className="flex justify-start items-end">
+                                            <img className="w-20" src={footerLogo}></img>
+                                        </div>
+                                    </div>
+
+                                    <div className="page h-[297mm] w-[210mm] p-6 flex flex-col justify-betwee  border-b-slate-700 border-4">
+                                        <h2 className="text-xl font-semibold">Table Of Contents</h2>
+                                        <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
+                                        <div className="section mt-5 font-sans text-sm flex-1 justify-start">
+                                            <p className=" p-2  overflow-y-auto">
+                                                We, at Foxtail Financial LLC, want to extend our heartfelt congratulations to you on your commitment to
+                                                achieving financial health and success. Your dedication and perseverance have led to significant strides in
+                                                your business’s journey and we are proud to be a part of your team as you continue to grow.
+                                            </p>
+                                            <p className=" p-2  overflow-y-auto">
+                                                As you delve into this financial report, we encourage you to keep an open mind, ask questions, and consider
+                                                the insights and recommendations provided herein. Together, we can work towards achieving your objectives
+                                                and securing a brighter future.
+                                            </p>
+                                            <p className=" p-2  overflow-y-auto">
+                                                Warm regards,
+                                            </p>
+                                            <h1 className="p-2 text-3xl font-semibold">Zack Goldglantz</h1>
+                                            <p className=" px-2 overflow-y-auto">
+                                                CEO, Foxtail Financial LLC
+                                            </p>
+
+                                            <div className="p-2 font-medium text-lg mt-5">
+                                                <span className="pr-4">p. 3</span>Profit & Loss Statement <br></br>
+                                                <span className="pr-4">p. 4</span>Balance Sheet <br></br>
+                                                <span className="pr-4">p. 5</span>Statement of Cash Flows <br></br>
+                                                <span className="pr-4">p. 6</span>KPI Display <br></br>
+                                                <span className="pr-4">p. 7</span>Forecasted Financials <br></br>
+                                                <span className="pr-4">p. 8</span>Executive Summary <br></br>
+                                                <span className="pr-4">p. 9</span>Additional Resources <br></br>
+                                            </div>
+                                        </div>
+
+
+                                        <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
                                         <div className="flex justify-start items-end">
                                             <img className="w-20" src={footerLogo}></img>
                                         </div>

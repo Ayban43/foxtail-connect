@@ -11,7 +11,6 @@ const PreviewModal = (props) => {
     const [cashFlowNumPages, setCashFlowNumPages] = useState(null);
     const [forecastedFinancialNumPages, setForecastedFinancialNumPages] = useState(null);
     const [kpiDisplayNumPages, setKpiDisplayNumPages] = useState(null);
-    const [zoom, setZoom] = useState(1.0);
 
     const capitalizeFirst = str => {
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -117,13 +116,7 @@ const PreviewModal = (props) => {
         }
     };
 
-    const handleZoomIn = () => {
-        setZoom((prevZoom) => prevZoom + 0.1);
-    };
 
-    const handleZoomOut = () => {
-        setZoom((prevZoom) => Math.max(prevZoom - 0.1, 0.1));
-    };
 
 
 
@@ -141,20 +134,10 @@ const PreviewModal = (props) => {
                         </div> */}
 
                         <div className="section flex-1 justify-center flex">
-                            <div
-                                className="flex items-center justify-center bg-slate-200 rounded-full w-96 h-96"
-                                style={{
-                                    borderRadius: "50%",
-                                    backgroundImage: `url(${props.clientLogo})`,
-                                    backgroundSize: "contain",
-                                    backgroundRepeat: "no-repeat",
-                                    backgroundPosition: "center"
-                                }}
-                            ></div>
+                            <div className="flex items-center justify-center bg-slate-200 rounded-full w-96 h-96">
+                                <img src={props.clientLogo} alt="company logo"></img>
+                            </div>
                         </div>
-
-
-
 
                         <div className="section flex-1 justify-center flex-wrap">
                             <hr className="my-2 h-0.5 border-t-0 mx-5 bg-neutral-300 opacity-100 dark:opacity-50" />
@@ -213,19 +196,8 @@ const PreviewModal = (props) => {
                     </div>
 
                     <div className="page h-[297mm] w-[210mm] p-6 flex flex-col  border-b-slate-700 border-4">
-                        <div className="flex justify-between">
-                            <div>
-                                <h2 className="text-xl font-semibold">Profit & Loss Statement</h2>
-                            </div>
-                            <div>
-                                <button onClick={handleZoomIn}>+</button>
-                                <button onClick={handleZoomOut}>-</button>
-                            </div>
-
-                        </div>
-
+                        <h2 className="text-xl font-semibold">Profit & Loss Statement</h2>
                         <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
-
                         <div className="section flex-1 mt-2 font-sans flex justify-center">
                             <div>
                                 <Document
@@ -233,7 +205,7 @@ const PreviewModal = (props) => {
                                     onLoadSuccess={profitLossOnDocumentLoadSuccess}
 
                                 >
-                                    {profitLossNumPages && <Page pageNumber={profitLossCurrentPage} renderTextLayer={false} height={800} scale={zoom} />}
+                                    {profitLossNumPages && <Page pageNumber={profitLossCurrentPage} renderTextLayer={false} height={800} />}
                                 </Document>
                                 <div className="flex justify-between text-xs text-orange-700">
                                     {profitLossCurrentPage > 1 && (

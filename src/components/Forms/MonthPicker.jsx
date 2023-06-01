@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-const MonthPicker = ({ onChange }) => {
+const MonthPicker = ({ onChange, selectedM, selectedY }) => {
   const today = new Date();
-  const [selectedMonth, setSelectedMonth] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState(selectedM || "");
+  const [selectedYear, setSelectedYear] = useState(selectedY || "");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,12 +15,18 @@ const MonthPicker = ({ onChange }) => {
   };
 
   useEffect(() => {
-    if (selectedMonth && selectedYear) {
+    if (selectedMonth) {
       onChange(selectedMonth, selectedYear);
     }
-  }, [selectedMonth, selectedYear]);
+  }, [selectedMonth]);
 
-  const years = Array.from({length: 6}, (_, i) => today.getFullYear() - i);
+  useEffect(() => {
+    if (selectedYear) {
+      onChange(selectedMonth, selectedYear);
+    }
+  }, [selectedYear]);
+
+  const years = Array.from({ length: 6 }, (_, i) => today.getFullYear() - i);
 
   const months = [
     { id: 1, name: 'January' },
@@ -43,7 +49,7 @@ const MonthPicker = ({ onChange }) => {
         <select
           className="block w-full rounded-lg border border-gray-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-200"
           name="month"
-          value={selectedMonth}
+          defaultValue={selectedM}
           onChange={handleChange}
         >
           <option value="" disabled >Month</option>
@@ -58,7 +64,7 @@ const MonthPicker = ({ onChange }) => {
         <select
           className="block w-full rounded-lg border border-gray-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-200"
           name="year"
-          value={selectedYear}
+          defaultValue={selectedY}
           onChange={handleChange}
         >
           <option value="" disabled>Year</option>

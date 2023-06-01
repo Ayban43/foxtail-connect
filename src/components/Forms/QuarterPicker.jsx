@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-const QuarterPicker = ({ onChange }) => {
+const QuarterPicker = ({ onChange, selectedQ, selectedQy }) => {
   const today = new Date();
-  const [selectedQuarter, setSelectedQuarter] = useState('');
-  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedQuarter, setSelectedQuarter] = useState(selectedQ || '');
+  const [selectedYear, setSelectedYear] = useState(selectedQy || '');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,13 +14,20 @@ const QuarterPicker = ({ onChange }) => {
     }
   };
 
-//   console.log("picker",selectedQuarter,selectedYear)
+  //   console.log("picker",selectedQuarter,selectedYear)
+
 
   useEffect(() => {
-    if (selectedQuarter && selectedYear) {
+    if (selectedQuarter) {
       onChange(selectedQuarter, selectedYear);
     }
-  }, [selectedQuarter, selectedYear]);
+  }, [selectedQuarter]);
+
+  useEffect(() => {
+    if (selectedYear) {
+      onChange(selectedQuarter, selectedYear);
+    }
+  }, [selectedYear]);
 
   const quarters = [
     { id: 1, name: 'Q1 - Jan to Mar' },
@@ -29,7 +36,7 @@ const QuarterPicker = ({ onChange }) => {
     { id: 4, name: 'Q4 - Oct to Dec' },
   ];
 
-  const years = Array.from({length: 6}, (_, i) => today.getFullYear() - i);
+  const years = Array.from({ length: 6 }, (_, i) => today.getFullYear() - i);
 
   return (
     <div className="flex gap-4 text-center w-full justify-start">
@@ -37,7 +44,7 @@ const QuarterPicker = ({ onChange }) => {
         <select
           className="block w-full rounded-lg border border-gray-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-200"
           name="quarter"
-          value={selectedQuarter}
+          defaultValue={selectedQ}
           onChange={handleChange}
         >
           <option value="">Quarter</option>
@@ -52,7 +59,7 @@ const QuarterPicker = ({ onChange }) => {
         <select
           className="block w-full rounded-lg border border-gray-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-200"
           name="year"
-          value={selectedYear}
+          defaultValue={selectedQy}
           onChange={handleChange}
         >
           <option value="">Year</option>

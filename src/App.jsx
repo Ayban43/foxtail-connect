@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 // import { Login, Dashboard } from './pages';
 import { Dashboard } from './pages/Dashboard';
-import { Client, AddClient } from './pages/Client';
+import { Client, Add, Edit } from './pages/Client';
 import { Login } from './pages/Login';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { ErrorPage } from './pages/Error/';
 import Sidebar from './components/Sidebar';
 import supabase from './config/supabaseClient';
-import { FinancialSummary, AddFinancialSummary } from './pages/FinancialSummary';
+import { FinancialSummary, AddFinancialSummary, EditFinancialSummary } from './pages/FinancialSummary';
 import { FinancialSummaryClient, ViewFinancialSummaryClient } from './pages/FinancialSummaryClient';
 import LoadingSpinner from './components/UI/LoadingSpinner';
 import { OnBoardingChecklist } from './pages/OnBoardingChecklist';
@@ -83,9 +83,11 @@ const App = () => {
           <>
             <Route path={'/'} element={<><Sidebar isAdmin={isAdmin} /><Dashboard isAdmin={isAdmin} /></>} />
             <Route path={'/client'} element={<><Sidebar isAdmin={isAdmin} /><Client isAdmin={isAdmin} /></>} />
-            <Route path={'/client/add'} element={<><Sidebar isAdmin={isAdmin} /><AddClient isAdmin={isAdmin} /></>} />
+            <Route path={'/client/add'} element={<><Sidebar isAdmin={isAdmin} /><Add isAdmin={isAdmin} /></>} />
+            <Route path={'/client/edit/:id'} element={<><Sidebar isAdmin={isAdmin} /><Edit isAdmin={isAdmin} /></>} />
             <Route path={'/financial-summary/add'} element={<><Sidebar isAdmin={isAdmin} /><AddFinancialSummary isAdmin={isAdmin} /></>} />
             <Route path={'/financial-summary'} element={<><Sidebar isAdmin={isAdmin} /><FinancialSummary isAdmin={isAdmin} /></>} />
+            <Route path={'/financial-summary/edit/:id'} element={<><Sidebar isAdmin={isAdmin} /><EditFinancialSummary isAdmin={isAdmin} /></>} />
           </>
         ) : userSession && isAdmin === false ? (
           <>

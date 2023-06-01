@@ -9,9 +9,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const ProfitLossSummary = ({
   profitLossFileUrl,
   onFileUpload,
-  profitLossFileAnalysis,
+  profitLossAnalysis,
   onInputValueChange,
 }) => {
+
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [numPages, setNumPages] = useState(null);
@@ -192,7 +193,7 @@ const ProfitLossSummary = ({
           id="swift-analysis"
           className="border border-gray-400 rounded w-full p-2"
           rows={4}
-          value={profitLossFileAnalysis}
+          value={profitLossAnalysis}
           onChange={onInputValueChange}
           placeholder="Enter text"
         />

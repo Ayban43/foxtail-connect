@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const YearPicker = ({ onChange }) => {
+const YearPicker = ({ onChange, selectedAnnual }) => {
   const [selectedYear, setSelectedYear] = useState(null);
   const years = [];
   const currentYear = new Date().getFullYear();
@@ -15,15 +15,17 @@ const YearPicker = ({ onChange }) => {
     onChange(selectedYear);
   };
 
+  // console.log('year', periodCovered)
+
   return (
     <div className="flex">
       <select
         className="block w-full rounded-lg border border-gray-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-200"
-        defaultValue=""
+        defaultValue={selectedAnnual}
         onChange={handleYearChange}
       >
         <option value="" disabled>
-        Year
+          Year
         </option>
         {years.map((year) => (
           <option key={year} value={year}>

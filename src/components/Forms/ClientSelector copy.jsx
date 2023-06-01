@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 
-const ClientSelector = ({ clients, onClientSelect, selectedC }) => {
+const ClientSelector = ({ clients, onClientSelect }) => {
   const [inputValue, setInputValue] = useState("");
-  const [selected, setSelected] = useState(selectedC ? selectedC : "");
+  const [selected, setSelected] = useState("");
   const [open, setOpen] = useState(false);
   const [width, setWidth] = useState(0);
 
@@ -14,14 +14,6 @@ const ClientSelector = ({ clients, onClientSelect, selectedC }) => {
     setInputValue("");
     onClientSelect(clientEmail); // pass the selected email
   };
-
-  useEffect(() => {
-    if (selectedC) {
-      setSelected(selectedC);
-    }
-  }, []);
-
-  // console.log("selected, ", selected)
 
   const ulStyle = {
     zIndex: 10,

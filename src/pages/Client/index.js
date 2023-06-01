@@ -1,10 +1,11 @@
 
 import Client from './Client'
-import AddClient from './AddClient'
+import Add from './Add'
+import Edit from './Edit'
 
 
 
 
 export {
-    Client, AddClient
+    Client, Add, Edit
 }

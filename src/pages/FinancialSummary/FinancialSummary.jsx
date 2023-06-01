@@ -26,27 +26,6 @@ const FinancialSummary = () => {
         }
     }, [added]);
 
-    // useEffect(() => {
-    //     const fetchSummaries = async () => {
-    //         setIsLoading(true)
-
-    //         const { data, error } = await supabase
-    //             .from('financial_summary')
-    //             .select()
-    //             .order('id', { ascending: false })
-
-    //         if (error) {
-    //             setClients(null)
-    //             console.log(error)
-    //         }
-    //         if (data) {
-    //             setClients(data);
-    //             setIsLoading(false)
-    //         }
-    //     }
-    //     fetchSummaries()
-    // }, [])
-
     useEffect(() => {
         const fetchSummaries = async () => {
             setIsLoading(true);
@@ -89,8 +68,6 @@ const FinancialSummary = () => {
 
         fetchSummaries();
     }, []);
-
-    console.log(financialSummary)
 
     function handleDeleteClick(event) {
         const rowId = event.target.dataset.rowId;
@@ -172,7 +149,7 @@ const FinancialSummary = () => {
                     <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">All Financial Summary</h1>
                     <div className="flex items-center justify-end ml-auto space-x-2 sm:space-x-3 mb-5">
                         <Link to="/financial-summary/add">
-                            <span data-modal-toggle="add-user-modal" className="inline-flex items-center text-white block w-1/2 px-3 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900">
+                            <span data-modal-toggle="add-user-modal" className="inline-flex items-center text-white w-1/2 px-3 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900">
                                 <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>
                                 Add Financial Summary
                             </span>
@@ -235,11 +212,13 @@ const FinancialSummary = () => {
                                                 </td>
 
                                                 <td className="px-6 py-4 flex gap-3">
-                                                    <span className="inline-flex items-center text-white block w-1/2 px-3 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900">
-                                                        <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd"></path></svg>
-                                                        Edit
-                                                    </span>
-                                                    <span onClick={handleDeleteClick} data-row-id={info.id} className="inline-flex items-center text-white block hover:cursor-pointer w-1/2 px-3 py-2 bg-red-600 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900">
+                                                    <Link to={"../financial-summary/edit/" + info.id}>
+                                                        <span className="inline-flex items-center text-white w-1/2 px-3 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900">
+                                                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd"></path></svg>
+                                                            Edit
+                                                        </span>
+                                                    </Link>
+                                                    <span onClick={handleDeleteClick} data-row-id={info.id} className="inline-flex items-center text-white hover:cursor-pointer w-1/2 px-3 py-2 bg-red-600 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900">
                                                         <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
                                                         Delete
                                                     </span>

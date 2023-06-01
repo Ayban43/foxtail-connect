@@ -9,7 +9,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const ForecastedFinancialSummary = ({
   forecastedFinancialFileUrl,
   onFileUpload,
-  forecastedFinancialFileAnalysis,
+  forecastedFinancialAnalysis,
   onInputValueChange,
 }) => {
   const [file, setFile] = useState(null);
@@ -192,7 +192,7 @@ const ForecastedFinancialSummary = ({
           id="swift-analysis"
           className="border border-gray-400 rounded w-full p-2"
           rows={4}
-          value={forecastedFinancialFileAnalysis}
+          value={forecastedFinancialAnalysis}
           onChange={onInputValueChange}
           placeholder="Enter text"
         />
