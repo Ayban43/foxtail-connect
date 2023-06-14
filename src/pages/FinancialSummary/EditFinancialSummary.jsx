@@ -453,6 +453,9 @@ const EditFinancialSummary = () => {
                                 <div className="flex gap-5 items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-700">
                                     <button onClick={handlePreviewClick} className="text-white block w-1/2 px-3 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900">Preview</button>
                                     <button onClick={handleSubmit} className="text-white block w-1/2 px-3 py-2 bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900">Save</button>
+                                    <div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>

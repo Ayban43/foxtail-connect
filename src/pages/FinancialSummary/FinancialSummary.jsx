@@ -4,27 +4,25 @@ import supabase from '../../config/supabaseClient'
 import LoadingSpinner from '../../components/UI/LoadingSpinner'
 import { useLocation } from 'react-router-dom';
 import Toast from '../../components/UI/Toast'
-
+import publishedSvg from '../../assets/published.svg';
+import unpublishedSvg from '../../assets/unpublished.svg';
 
 const FinancialSummary = () => {
     const [financialSummary, setFinancialSummary] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
     const [rowIdToDelete, setRowIdToDelete] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [showModalPublished, setShowModalPublished] = useState(false);
     const [showToast, setShowToast] = useState(false);
+    const [publishedStatus, setPublishedStatus] = useState({}); // Initialize the published status object
+    const [initialLoad, setInitialLoad] = useState(true);
+    const [rowIdToPublished, setRowIdToPublished] = useState(null);
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const added = queryParams.get('added');
 
-    useEffect(() => {
-        if (added === 'true') {
-            setShowToast(true);
-            setTimeout(() => {
-                setShowToast(false);
-            }, 3000);
-        }
-    }, [added]);
+    const [isLoadingStatus, setIsLoadingStatus] = useState(true);
 
     useEffect(() => {
         const fetchSummaries = async () => {
@@ -63,17 +61,35 @@ const FinancialSummary = () => {
             });
 
             setFinancialSummary(summariesWithClients);
+
+            // Initialize the publishedStatus state
+            const initialStatus = {};
+            summariesWithClients.forEach((summary) => {
+                initialStatus[summary.id] = summary.published;
+            });
+            setPublishedStatus(initialStatus);
+
             setIsLoading(false);
         };
 
         fetchSummaries();
     }, []);
 
+
+
     function handleDeleteClick(event) {
         const rowId = event.target.dataset.rowId;
         setRowIdToDelete(rowId);
+        console.log('rowId', rowId)
         setShowModal(true);
         console.log('hello clicked')
+    }
+
+    function handlePublishClick(event) {
+        const rowId = event.currentTarget.getAttribute("data-row-id");
+        console.log('rowId', rowId);
+        setRowIdToPublished(rowId);
+        setShowModalPublished(true);
     }
 
     function handleConfirmDelete() {
@@ -97,10 +113,57 @@ const FinancialSummary = () => {
         }
     }
 
+    // Function to update the published status
+    const updatePublishStatus = async () => {
+        console.log('update button', rowIdToPublished)
+        if (rowIdToPublished) {
+            try {
+                const { data, error } = await supabase
+                    .from('financial_summary')
+                    .update({ published: !publishedStatus[rowIdToPublished] })
+                    .eq('id', rowIdToPublished)
+                    .single();
+
+                if (error) {
+                    console.error('Error updating publish status:', error);
+                    return;
+                }
+
+                console.log('Publish status updated successfully:', data);
+
+                setPublishedStatus((prevStatus) => ({
+                    ...prevStatus,
+                    [rowIdToPublished]: !prevStatus[rowIdToPublished],
+                }));
+
+                setShowToast(true); // Set showToast to true after successful update
+            } catch (error) {
+                console.error('Error updating publish status:', error);
+            } finally {
+                setShowModalPublished(false);
+            }
+
+        }
+
+    };
+
+    //show toast
+    useEffect(() => {
+        if (showToast) {
+            const timer = setTimeout(() => {
+                setShowToast(false); // Set showToast to false after 2 seconds
+            }, 1500);
+
+            return () => {
+                clearTimeout(timer); // Clear the timeout if the component unmounts before the timeout expires
+            };
+        }
+    }, [showToast]);
+
     return (
         <>
             <div className="ml-64 p-5 pt-24 h-screen bg-slate-100">
-                {showToast && <Toast message="Data added successfully!" />}
+                {showToast && <Toast message="Published status updated!" />}
                 <nav className="flex mb-5" aria-label="Breadcrumb">
                     <ol className="inline-flex items-center space-x-1 md:space-x-3">
                         <li className="inline-flex items-center">
@@ -146,6 +209,27 @@ const FinancialSummary = () => {
                         </div>
                     )}
 
+                    {showModalPublished && (
+                        <div id="confirm-modal" tabIndex="-1" className="fixed z-50 p-4 -inset-x-10 flex items-center justify-center">
+                            <div className="relative w-full h-full max-w-md md:h-auto">
+                                <div className="relative bg-slate-100 rounded-lg shadow-xl dark:bg-gray-700">
+                                    <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
+                                        <svg onClick={() => setShowModalPublished(false)} aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                                        <span className="sr-only">Close modal</span>
+                                    </button>
+                                    <div className="p-6 text-center">
+                                        <svg aria-hidden="true" className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you update the published status?</h3>
+                                        <button onClick={updatePublishStatus} data-modal-hide="popup-modal" type="button" className="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                            Yes, I'm sure
+                                        </button>
+                                        <button onClick={() => setShowModalPublished(false)} data-modal-hide="popup-modal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No, cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">All Financial Summary</h1>
                     <div className="flex items-center justify-end ml-auto space-x-2 sm:space-x-3 mb-5">
                         <Link to="/financial-summary/add">
@@ -181,7 +265,7 @@ const FinancialSummary = () => {
                                             Date Created
                                         </th>
 
-                                        <th scope="col" className="px-6 py-3">
+                                        <th scope="col" className="px-6 py-3 flex justify-center">
                                             Action
                                         </th>
                                     </tr>
@@ -211,7 +295,7 @@ const FinancialSummary = () => {
                                                     {new Date(info.created_at).toLocaleDateString('en-US') + " " + new Date(info.created_at).toLocaleTimeString('en-US')}
                                                 </td>
 
-                                                <td className="px-6 py-4 flex gap-3">
+                                                <td className="py-4 flex justify-center gap-3">
                                                     <Link to={"../financial-summary/edit/" + info.id}>
                                                         <span className="inline-flex items-center text-white w-1/2 px-3 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900">
                                                             <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd"></path></svg>
@@ -222,6 +306,29 @@ const FinancialSummary = () => {
                                                         <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
                                                         Delete
                                                     </span>
+
+                                                    <span
+                                                        onClick={handlePublishClick}
+                                                        data-row-id={info.id}
+                                                        className={`inline-flex items-center text-white hover:cursor-pointer w-1/2 px-3 py-2 ${(info.published && !isLoadingStatus) || publishedStatus[info.id]
+                                                            ? 'bg-green-500'
+                                                            : 'bg-orange-600'
+                                                            } focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900`}
+                                                    >
+                                                        {((info.published && !isLoadingStatus) || publishedStatus[info.id]) && !isLoading ? (
+                                                            <div className="mr-2 flex gap-2">
+                                                                <img src={publishedSvg} alt="Published" width="15" height="15" />
+                                                                <span>Published{info.published}</span>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="mr-2 flex gap-2">
+                                                                <img src={unpublishedSvg} alt="Unpublished" width="15" height="15" />
+                                                                <span>Published</span>
+                                                            </div>
+                                                        )}
+                                                    </span>
+
+
                                                 </td>
                                             </tr>
                                         )

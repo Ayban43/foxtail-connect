@@ -9,5 +9,5 @@ module.exports = {
     },
   },
   plugins: [],
-  darkMode: 'false',
+  darkMode: 'true',
 }

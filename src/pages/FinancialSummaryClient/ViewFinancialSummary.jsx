@@ -8,6 +8,7 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
+
 const ViewFinancialSummaryClient = () => {
     const [financialSummary, setFinancialSummary] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
@@ -39,6 +40,22 @@ const ViewFinancialSummaryClient = () => {
     const [executiveAnalysis, setExecutiveAnalysis] = useState("");
     const [keepAnEyeOn, setKeepAnEyeOn] = useState("");
     const [strategicOpportunities, setStrategicOpportunities] = useState("");
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pdfFile, setPdfFile] = useState(''); // State variable to store the PDF file URL or path
+
+
+    const openModal = (fileUrl, pageNumber) => {
+        setPdfFile(fileUrl);
+        setCurrentPage(pageNumber);
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setPdfFile('');
+    };
 
     const capitalizeFirst = str => {
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -216,6 +233,41 @@ const ViewFinancialSummaryClient = () => {
     return (
         <>
             <div className="ml-64 p-5 pt-24 h-screen bg-slate-100">
+                {modalOpen && (
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg"></div>
+                        <div className="modal-container bg-white p-4 rounded-md shadow-md">
+                            <button
+                                className="absolute top-2 right-2 p-2 bg-gray-300 rounded-full"
+                                onClick={closeModal}
+                            >
+                                <svg
+                                    className="w-6 h-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                            <div className="pdf-container">
+                                <Document file={pdfFile}>
+                                    <Page
+                                        pageNumber={currentPage}
+                                        renderTextLayer={false}
+                                        height={window.innerHeight * 0.90}
+                                    />
+                                </Document>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 <nav className="flex mb-5" aria-label="Breadcrumb">
                     <ol className="inline-flex items-center space-x-1 md:space-x-3">
                         <li className="inline-flex items-center">
@@ -238,9 +290,9 @@ const ViewFinancialSummaryClient = () => {
                         </li>
                     </ol>
                 </nav>
-                <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div className="p-4 bg-gray-600 border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
 
-                    <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">View Financial Summary</h1>
+                    <h1 className="text-xl font-semibold text-white sm:text-2xl dark:text-white">View Financial Summary</h1>
                     <div className="flex items-center justify-end ml-auto space-x-2 sm:space-x-3 mb-5">
                         <a href="#" className="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">
                             <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd"></path></svg>
@@ -328,14 +380,22 @@ const ViewFinancialSummaryClient = () => {
                                         <h2 className="text-xl font-semibold">Profit & Loss Statement</h2>
                                         <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
                                         <div className="section flex-1 mt-2 font-sans flex justify-center">
-                                            <div>
+                                            <div className='cursor-zoom-in'>
                                                 <Document
                                                     file={profitLossUrl}
                                                     onLoadSuccess={profitLossOnDocumentLoadSuccess}
-
                                                 >
-                                                    {profitLossNumPages && <Page pageNumber={profitLossCurrentPage} renderTextLayer={false} height={800} />}
+                                                    {profitLossNumPages && (
+                                                        <Page
+                                                            pageNumber={profitLossCurrentPage}
+                                                            renderTextLayer={false}
+                                                            height={800}
+                                                            className={'hover:cursor'}
+                                                            onClick={() => openModal(profitLossUrl, profitLossCurrentPage)}
+                                                        />
+                                                    )}
                                                 </Document>
+
                                                 <div className="flex justify-between text-xs text-orange-700">
                                                     {profitLossCurrentPage > 1 && (
                                                         <span onClick={profitLossGoToPreviousPage} className="cursor-pointer flex border-b-2 border-orange-700">
@@ -356,7 +416,7 @@ const ViewFinancialSummaryClient = () => {
                                                         </span>
                                                     )}
 
-                                                    <p className="flex justify-center">Current Page: {profitLossCurrentPage} / {profitLossNumPages}</p>
+                                                    {/* <p className="flex justify-center">Current Page: {profitLossCurrentPage} / {profitLossNumPages}</p> */}
                                                 </div>
 
                                             </div>
@@ -380,12 +440,17 @@ const ViewFinancialSummaryClient = () => {
                                         <h2 className="text-xl font-semibold">Balance Sheet</h2>
                                         <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
                                         <div className="section flex-1 mt-2 font-sans flex justify-center">
-                                            <div>
+                                            <div className='cursor-zoom-in'>
                                                 <Document
                                                     file={balanceSheetUrl}
                                                     onLoadSuccess={balanceSheetOnDocumentLoadSuccess}
                                                 >
-                                                    {balanceSheetNumPages && <Page pageNumber={balanceSheetCurrentPage} renderTextLayer={false} height={800} />}
+                                                    {balanceSheetNumPages && <Page
+                                                        pageNumber={balanceSheetCurrentPage}
+                                                        renderTextLayer={false} height={800}
+                                                        className={'hover:cursor'}
+                                                        onClick={() => openModal(balanceSheetUrl, balanceSheetCurrentPage)}
+                                                    />}
                                                 </Document>
                                                 <div className="flex justify-between text-xs text-orange-700">
                                                     {balanceSheetCurrentPage > 1 && (
@@ -407,7 +472,7 @@ const ViewFinancialSummaryClient = () => {
                                                         </span>
                                                     )}
 
-                                                    <p className="flex justify-center">Current Page: {balanceSheetCurrentPage} / {balanceSheetNumPages}</p>
+                                                    {/* <p className="flex justify-center">Current Page: {balanceSheetCurrentPage} / {balanceSheetNumPages}</p> */}
                                                 </div>
 
                                             </div>
@@ -430,12 +495,18 @@ const ViewFinancialSummaryClient = () => {
                                         <h2 className="text-xl font-semibold">Statement of Cash Flows</h2>
                                         <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
                                         <div className="section flex-1 mt-2 font-sans flex justify-center">
-                                            <div>
+                                            <div className='cursor-zoom-in'>
                                                 <Document
                                                     file={cashFlowUrl}
                                                     onLoadSuccess={cashFlowOnDocumentLoadSuccess}
                                                 >
-                                                    {cashFlowNumPages && <Page pageNumber={cashFlowCurrentPage} renderTextLayer={false} height={800} />}
+                                                    {cashFlowNumPages && <Page
+                                                        pageNumber={cashFlowCurrentPage}
+                                                        renderTextLayer={false}
+                                                        height={800}
+                                                        className={'hover:cursor'}
+                                                        onClick={() => openModal(cashFlowUrl, cashFlowCurrentPage)}
+                                                    />}
                                                 </Document>
                                                 <div className="flex justify-between text-xs text-orange-700">
                                                     {cashFlowCurrentPage > 1 && (
@@ -457,7 +528,7 @@ const ViewFinancialSummaryClient = () => {
                                                         </span>
                                                     )}
 
-                                                    <p className="flex justify-center">Current Page: {cashFlowCurrentPage} / {cashFlowNumPages}</p>
+                                                    {/* <p className="flex justify-center">Current Page: {cashFlowCurrentPage} / {cashFlowNumPages}</p> */}
                                                 </div>
 
                                             </div>
@@ -480,12 +551,18 @@ const ViewFinancialSummaryClient = () => {
                                         <h2 className="text-xl font-semibold">KPI Display</h2>
                                         <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
                                         <div className="section flex-1 mt-2 font-sans flex justify-center">
-                                            <div>
+                                            <div className='cursor-zoom-in'>
                                                 <Document
                                                     file={kpiDisplayUrl}
                                                     onLoadSuccess={kpiDisplayOnDocumentLoadSuccess}
                                                 >
-                                                    {kpiDisplayNumPages && <Page pageNumber={kpiDisplayCurrentPage} renderTextLayer={false} height={800} />}
+                                                    {kpiDisplayNumPages && <Page
+                                                        pageNumber={kpiDisplayCurrentPage}
+                                                        renderTextLayer={false}
+                                                        height={800}
+                                                        className={'hover:cursor'}
+                                                        onClick={() => openModal(kpiDisplayUrl, kpiDisplayCurrentPage)}
+                                                    />}
                                                 </Document>
                                                 <div className="flex justify-between text-xs text-orange-700">
                                                     {kpiDisplayCurrentPage > 1 && (
@@ -507,7 +584,7 @@ const ViewFinancialSummaryClient = () => {
                                                         </span>
                                                     )}
 
-                                                    <p className="flex justify-center">Current Page: {kpiDisplayCurrentPage} / {kpiDisplayNumPages}</p>
+                                                    {/* <p className="flex justify-center">Current Page: {kpiDisplayCurrentPage} / {kpiDisplayNumPages}</p> */}
                                                 </div>
 
                                             </div>
@@ -523,12 +600,18 @@ const ViewFinancialSummaryClient = () => {
                                         <h2 className="text-xl font-semibold">Forecasted Financials</h2>
                                         <hr className="h-0.5 border-t-0 bg-neutral-700 opacity-100 dark:opacity-50" />
                                         <div className="section flex-1 mt-2 font-sans flex justify-center">
-                                            <div>
+                                            <div className='cursor-zoom-in'>
                                                 <Document
                                                     file={forecastedFinancialUrl}
                                                     onLoadSuccess={forecastedFinancialOnDocumentLoadSuccess}
                                                 >
-                                                    {forecastedFinancialNumPages && <Page pageNumber={forecastedFinancialCurrentPage} renderTextLayer={false} height={800} />}
+                                                    {forecastedFinancialNumPages && <Page
+                                                        pageNumber={forecastedFinancialCurrentPage}
+                                                        renderTextLayer={false}
+                                                        height={800}
+                                                        className={'hover:cursor'}
+                                                        onClick={() => openModal(forecastedFinancialUrl, forecastedFinancialCurrentPage)}
+                                                    />}
                                                 </Document>
                                                 <div className="flex justify-between text-xs text-orange-700">
                                                     {forecastedFinancialCurrentPage > 1 && (
@@ -550,7 +633,7 @@ const ViewFinancialSummaryClient = () => {
                                                         </span>
                                                     )}
 
-                                                    <p className="flex justify-center">Current Page: {forecastedFinancialCurrentPage} / {forecastedFinancialNumPages}</p>
+                                                    {/* <p className="flex justify-center">Current Page: {forecastedFinancialCurrentPage} / {forecastedFinancialNumPages}</p> */}
                                                 </div>
 
                                             </div>
