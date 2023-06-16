@@ -4,6 +4,8 @@ import supabase from '../../config/supabaseClient'
 import LoadingSpinner from '../../components/UI/LoadingSpinner'
 import { useLocation } from 'react-router-dom';
 import Toast from '../../components/UI/Toast';
+import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, PDFViewer, Image } from '@react-pdf/renderer';
+import ClientPdf from './ClientPdf';
 
 const Client = () => {
     const [clients, setClients] = useState([]);
@@ -15,6 +17,51 @@ const Client = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const added = queryParams.get('added');
+
+    const generatePDFContent = (clients) => {
+        return (
+            <Document>
+                <Page>
+                    <View style={styles.table}>
+                        {clients.map((info, ind) => (
+                            <View key={ind} style={styles.row}>
+                                <Text style={styles.cell}>{ind + 1}</Text>
+                                <Image src={info.logoUrl} style={styles.image} />
+                                <Text style={styles.cell}>{info.business_name}</Text>
+                                <Text style={styles.cell}>{info.contact_name}</Text>
+                                <Text style={styles.cell}>{info.email}</Text>
+                            </View>
+                        ))}
+                    </View>
+                </Page>
+            </Document>
+        );
+    };
+
+    const styles = StyleSheet.create({
+        table: {
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+        },
+        row: {
+            flexDirection: 'row',
+            borderBottomWidth: 1,
+            borderBottomColor: '#000',
+            alignItems: 'center',
+            height: 24,
+            paddingLeft: 5,
+            paddingRight: 5,
+        },
+        cell: {
+            width: '25%',
+            textAlign: 'center',
+        },
+        image: {
+            width: 25, // Adjust the width as per your requirements
+            height: 25, // Adjust the height as per your requirements
+            objectFit: 'cover',
+        },
+    });
 
     useEffect(() => {
         const fetchClients = async () => {
@@ -134,10 +181,13 @@ const Client = () => {
                                 Add user
                             </span>
                         </Link>
-                        <a href="#" className="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">
-                            <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd"></path></svg>
-                            Export
-                        </a>
+                        <PDFDownloadLink document={<ClientPdf clients={clients} />} fileName="clients.pdf">
+                            {({ blob, url, loading, error }) => (loading ? "Loading. . ." : <span className="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+                                <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd"></path></svg>
+                                Export
+                            </span>)}
+                        </PDFDownloadLink>
+
                     </div>
 
                     {isLoading ? <LoadingSpinner /> :
@@ -205,6 +255,8 @@ const Client = () => {
                                 </tbody>
 
                             </table>
+
+
                         </div>
                     }
 
