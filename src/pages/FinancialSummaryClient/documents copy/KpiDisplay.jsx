@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { pdfjs } from "react-pdf";
-import { Page, View, StyleSheet, Image, Text, Link } from '@react-pdf/renderer';
+import { Page, View, StyleSheet, Image, Text } from '@react-pdf/renderer';
 
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { BiBorderBottom } from "react-icons/bi";
@@ -11,11 +11,14 @@ const styles = StyleSheet.create({
     page: {
         flexDirection: 'column',
         backgroundColor: '#fff',
+        padding: 10,
     },
     pdfFile: {
         justifyContent: 'center',
         alignSelf: 'center',
-        width: "95%",
+        marginBottom: 5,
+        height: "600px",
+        width: "500px",
     },
     title: {
         fontSize: '12px',
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const CashFlow = ({ cashFlowUrl, footerLogo, cashFlowAnalysis }) => {
+const KpiDisplay = ({ kpiDisplayUrl, footerLogo }) => {
     const [image, setImage] = useState("");
     const canvasRef = useRef(null);
 
@@ -56,7 +59,7 @@ const CashFlow = ({ cashFlowUrl, footerLogo, cashFlowAnalysis }) => {
 
         const fetchPdf = async () => {
             try {
-                const response = await fetch(cashFlowUrl);
+                const response = await fetch(kpiDisplayUrl);
                 const arrayBuffer = await response.arrayBuffer();
                 const uint8Array = new Uint8Array(arrayBuffer);
 
@@ -105,39 +108,21 @@ const CashFlow = ({ cashFlowUrl, footerLogo, cashFlowAnalysis }) => {
                 canvasRef.current.parentNode.removeChild(canvasRef.current);
             }
         };
-    }, [cashFlowUrl]);
+    }, [kpiDisplayUrl]);
 
     return (
-        <>
-            <Page size="LETTER" style={styles.page}>
-                <View style={styles.title}>
-                    <Text style={{ borderBottom: '1pt solid black' }}>Statement of Cash Flows</Text>
-                </View>
-                <View style={styles.pdfFile}>
-                    <Link src={cashFlowUrl}>
-                        <Image src={image} />
-                    </Link>
-                </View>
-                <View style={styles.footer}>
-                    <Image src={footerLogo} style={styles.footerLogoCss} />
-                </View>
-            </Page>
-
-            <Page size="LETTER" style={styles.page}>
-                <View style={styles.title}>
-                    <Text style={{ borderBottom: '1pt solid black' }}>Statement of Cash Flows</Text>
-                </View>
-                <View style={styles.analysis}>
-                    <Text style={{ marginLeft: '10px' }}>Swift Analaysis</Text>
-                    <Text style={styles.analysisBody}>{cashFlowAnalysis}</Text>
-                </View>
-                <View style={styles.footer}>
-                    <Image src={footerLogo} style={styles.footerLogoCss} />
-                </View>
-            </Page>
-        </>
-
+        <Page size="LETTER" style={styles.page}>
+            <View style={styles.title}>
+                <Text style={{ borderBottom: '1pt solid black' }}>KPI Display</Text>
+            </View>
+            <View style={styles.pdfFile}>
+                <Image src={image} />
+            </View>
+            <View style={styles.footer}>
+                <Image src={footerLogo} style={styles.footerLogoCss} />
+            </View>
+        </Page>
     );
 };
 
-export default CashFlow;
+export default KpiDisplay;

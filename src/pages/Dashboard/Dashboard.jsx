@@ -5,7 +5,7 @@ const Dashboard = ({ token, isAdmin }) => {
 
   return (
 
-    <div className="ml-64 mt-20 bg-red-600" style={{ height: "calc(100vh - 5rem)" }}>
+    <div className="mt-20 bg-red-600" style={{ height: "calc(100vh - 5rem)" }}>
       {/* <div className="text-3xl font-extrabold bg-pink-500 mx-auto">Testing Tailwind</div> */}
       <div className="relative h-full flex items-center justify-center bg-gray-900 overflow-hidden">
 

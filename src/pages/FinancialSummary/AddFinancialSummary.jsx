@@ -215,7 +215,7 @@ const AddFinancialSummary = () => {
 
     return (
         <>
-            <div className="ml-64 p-5 pt-24 bg-slate-100">
+            <div className="p-5 pt-24 bg-slate-100">
 
                 <nav className="flex mb-5" aria-label="Breadcrumb">
                     <ol className="inline-flex items-center space-x-1 md:space-x-3">

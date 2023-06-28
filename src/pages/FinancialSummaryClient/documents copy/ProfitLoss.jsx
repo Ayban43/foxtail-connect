@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { pdfjs } from "react-pdf";
-import { Page, View, StyleSheet, Image, Text, Link } from '@react-pdf/renderer';
+import { Page, View, StyleSheet, Image, Text } from '@react-pdf/renderer';
 
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { BiBorderBottom } from "react-icons/bi";
@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
     },
     analysis: {
         fontSize: '12px',
-        padding: '10px',
+        padding: '20px',
     },
     analysisBody: {
         fontSize: '9px',
-        padding: '10px',
+        padding: '20px',
         fontWeight: 'medium'
     },
     footer: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const CashFlow = ({ cashFlowUrl, footerLogo, cashFlowAnalysis }) => {
+const ProfitLoss = ({ profitLossUrl, footerLogo, profitLossAnalysis }) => {
     const [image, setImage] = useState("");
     const canvasRef = useRef(null);
 
@@ -56,7 +56,7 @@ const CashFlow = ({ cashFlowUrl, footerLogo, cashFlowAnalysis }) => {
 
         const fetchPdf = async () => {
             try {
-                const response = await fetch(cashFlowUrl);
+                const response = await fetch(profitLossUrl);
                 const arrayBuffer = await response.arrayBuffer();
                 const uint8Array = new Uint8Array(arrayBuffer);
 
@@ -105,18 +105,16 @@ const CashFlow = ({ cashFlowUrl, footerLogo, cashFlowAnalysis }) => {
                 canvasRef.current.parentNode.removeChild(canvasRef.current);
             }
         };
-    }, [cashFlowUrl]);
+    }, [profitLossUrl]);
 
     return (
         <>
             <Page size="LETTER" style={styles.page}>
                 <View style={styles.title}>
-                    <Text style={{ borderBottom: '1pt solid black' }}>Statement of Cash Flows</Text>
+                    <Text style={{ borderBottom: '1pt solid black' }}>Profit & Loss Statement</Text>
                 </View>
                 <View style={styles.pdfFile}>
-                    <Link src={cashFlowUrl}>
-                        <Image src={image} />
-                    </Link>
+                    <Image src={image} />
                 </View>
                 <View style={styles.footer}>
                     <Image src={footerLogo} style={styles.footerLogoCss} />
@@ -125,19 +123,19 @@ const CashFlow = ({ cashFlowUrl, footerLogo, cashFlowAnalysis }) => {
 
             <Page size="LETTER" style={styles.page}>
                 <View style={styles.title}>
-                    <Text style={{ borderBottom: '1pt solid black' }}>Statement of Cash Flows</Text>
+                    <Text style={{ borderBottom: '1pt solid black' }}>Profit & Loss Statement</Text>
                 </View>
                 <View style={styles.analysis}>
-                    <Text style={{ marginLeft: '10px' }}>Swift Analaysis</Text>
-                    <Text style={styles.analysisBody}>{cashFlowAnalysis}</Text>
+                    <Text style={{ marginLeft: '10px' }}>Swift Analysis</Text>
+                    <Text style={styles.analysisBody}>{profitLossAnalysis}</Text>
                 </View>
                 <View style={styles.footer}>
                     <Image src={footerLogo} style={styles.footerLogoCss} />
                 </View>
             </Page>
-        </>
 
+        </>
     );
 };
 
-export default CashFlow;
+export default ProfitLoss;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { pdfjs } from "react-pdf";
-import { Page, View, StyleSheet, Image, Text } from '@react-pdf/renderer';
+import { Page, View, StyleSheet, Image, Text, Link } from '@react-pdf/renderer';
 
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { BiBorderBottom } from "react-icons/bi";
@@ -11,14 +11,12 @@ const styles = StyleSheet.create({
     page: {
         flexDirection: 'column',
         backgroundColor: '#fff',
-        padding: 10,
     },
     pdfFile: {
         justifyContent: 'center',
         alignSelf: 'center',
         marginBottom: 5,
-        height: "600px",
-        width: "500px",
+        width: "95%",
     },
     title: {
         fontSize: '12px',
@@ -116,7 +114,9 @@ const KpiDisplay = ({ kpiDisplayUrl, footerLogo }) => {
                 <Text style={{ borderBottom: '1pt solid black' }}>KPI Display</Text>
             </View>
             <View style={styles.pdfFile}>
-                <Image src={image} />
+                <Link src={kpiDisplayUrl}>
+                    <Image src={image} />
+                </Link>
             </View>
             <View style={styles.footer}>
                 <Image src={footerLogo} style={styles.footerLogoCss} />

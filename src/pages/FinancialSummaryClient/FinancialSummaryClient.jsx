@@ -18,6 +18,7 @@ const FinancialSummaryClient = () => {
     const queryParams = new URLSearchParams(location.search);
     const added = queryParams.get('added');
 
+
     useEffect(() => {
         if (added === 'true') {
             setShowToast(true);
@@ -47,6 +48,7 @@ const FinancialSummaryClient = () => {
                         .from('financial_summary')
                         .select()
                         .eq('email', loggedInUserEmail)
+                        .eq('published', true)
                         .order('id', { ascending: false });
 
                     if (summaryError) {
@@ -120,7 +122,7 @@ const FinancialSummaryClient = () => {
 
     return (
         <>
-            <div className="ml-64 p-5 pt-24 h-screen bg-slate-100">
+            <div className="p-5 pt-24 h-screen bg-slate-100">
                 {showToast && <Toast message="Data added successfully!" />}
                 <nav className="flex mb-5" aria-label="Breadcrumb">
                     <ol className="inline-flex items-center space-x-1 md:space-x-3">

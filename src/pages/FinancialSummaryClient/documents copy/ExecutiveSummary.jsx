@@ -11,12 +11,14 @@ const styles = StyleSheet.create({
     page: {
         flexDirection: 'column',
         backgroundColor: '#fff',
+        padding: 10,
     },
     pdfFile: {
         justifyContent: 'center',
         alignSelf: 'center',
         marginBottom: 5,
-        width: "95%",
+        height: "600px",
+        width: "500px",
     },
     title: {
         fontSize: '12px',

@@ -154,7 +154,7 @@ const ViewFinancialSummaryClient = () => {
 
     return (
         <>
-            <div className="ml-64 p-5 pt-24 h-screen bg-slate-100">
+            <div className="p-5 pt-24 h-screen bg-slate-100">
                 {modalOpen && (
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg"></div>
@@ -209,7 +209,10 @@ const ViewFinancialSummaryClient = () => {
                         <li aria-current="page">
                             <div className="flex items-center">
                                 <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
-                                <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">View (Please be patient, as the loading process may take some time.)</span>
+
+                                <span className="mx-2 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">View</span>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Please be patient, as the loading process may take some time.</span>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">To view the actual file, you can click (CTRL + left-click) on the image or PDF, and it will open in a new tab.</span>
                             </div>
                         </li>
                     </ol>

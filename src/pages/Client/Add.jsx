@@ -81,7 +81,7 @@ const Add = () => {
 
     return (
         <>
-            <div className="ml-64 p-5 pt-24 h-screen bg-slate-100">
+            <div className="p-5 pt-24 h-screen bg-slate-100">
                 {/* {showToast && <Toast message="Data added successfully!" />} */}
                 <nav className="flex mb-5" aria-label="Breadcrumb">
                     <ol className="inline-flex items-center space-x-1 md:space-x-3">
