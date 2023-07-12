@@ -6,9 +6,11 @@ import { useLocation } from 'react-router-dom';
 import Toast from '../../components/UI/Toast'
 import BankAccount from './Tabs/BankAccount';
 import Options from './Options';
+import FileSelector from './FileSelector';
+import Selector from './FileSelector';
 
 
-const OnBoardingChecklist = () => {
+const OnBoardingChecklist = ({ userData }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [rowIdToDelete, setRowIdToDelete] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -16,9 +18,6 @@ const OnBoardingChecklist = () => {
     const [userSession, setUserSession] = useState("")
     const [activeTab, setActiveTab] = useState("a");
 
-    const handleTabClick = (tab) => {
-        setActiveTab(tab);
-    };
 
     return (
         <>
@@ -45,105 +44,14 @@ const OnBoardingChecklist = () => {
                         </li> */}
                     </ol>
                 </nav>
-                <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div className="p-4 border bg-white min-h-[600px] border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
 
                     <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">On-boarding Checklist</h1>
 
-
                     {isLoading ? <LoadingSpinner /> :
-                        <div className="border-b bg-slate-50 mt-5">
-                            <div className="flex items-center bg-gray-800 text-white text-sm justify-between">
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 b border-transparent mt-1 ${activeTab === "a" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200 ,t"
-                                        }`}
-                                    onClick={() => handleTabClick("a")}
-                                >
-                                    Bank Account Statements
-                                </button>
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 b border-transparent mt-1 ${activeTab === "b" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200"
-                                        }`}
-                                    onClick={() => handleTabClick("b")}
-                                >
-                                    Credit Card Statements
-                                </button>
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 b border-transparent mt-1 ${activeTab === "c" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200"
-                                        }`}
-                                    onClick={() => handleTabClick("c")}
-                                >
-                                    Summary of Sales and Cash/Check Receipts
-                                </button>
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 b border-transparent mt-1 ${activeTab === "d" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200"
-                                        }`}
-                                    onClick={() => handleTabClick("d")}
-                                >
-                                    Expense Summary
-                                </button>
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 b border-transparent mt-1 ${activeTab === "e" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200"
-                                        }`}
-                                    onClick={() => handleTabClick("e")}
-                                >
-                                    Latest Tax Return
-                                </button>
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 b border-transparent mt-1 ${activeTab === "f" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200"
-                                        }`}
-                                    onClick={() => handleTabClick("f")}
-                                >
-                                    Documents Related to Property or Equipment Transactions
-                                </button>
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 b border-transparent mt-1 ${activeTab === "g" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200"
-                                        }`}
-                                    onClick={() => handleTabClick("g")}
-                                >
-                                    Summary of Accounts Receivable
-                                </button>
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 b border-transparent mt-1 ${activeTab === "h" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200"
-                                        }`}
-                                    onClick={() => handleTabClick("h")}
-                                >
-                                    Summary of Accounts Payable
-                                </button>
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 b border-transparent mt-1 ${activeTab === "i" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200"
-                                        }`}
-                                    onClick={() => handleTabClick("i")}
-                                >
-                                    Debt Information
-                                </button>
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 b border-transparent mt-1 ${activeTab === "j" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200"
-                                        }`}
-                                    onClick={() => handleTabClick("j")}
-                                >
-                                    Payroll Data
-                                </button>
-                                <button
-                                    className={`px-4 py-2 w-full border-b-4 border-r-1 b border-transparent mt-1 ${activeTab === "k" ? "bg-gray-300 font-bold rounded-t-sm border-b-4 border-orange-400 text-gray-700" : "hover:bg-gray-700 hover:border-b-4 hover:border-orange-200"
-                                        }`}
-                                    onClick={() => handleTabClick("k")}
-                                >
-                                    Inventory Report
-                                </button>
-                            </div>
-
-                            <div className="p-4">
-                                {activeTab === "a" && <BankAccount />}
-                                {activeTab === "b" && <></>}
-                                {activeTab === "c" && <></>}
-                                {activeTab === "d-financial" && <></>}
-                                {activeTab === "e" && <></>}
-                                {activeTab === "f" && <></>}
-
-                            </div>
-
-                            <div className="flex gap-5 items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-700">
-                                <button className="text-white block w-1/2 px-3 py-2 bg-green-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm sm:w-auto text-center dark:focus:ring-blue-900">Save</button>
+                        <div className="border-b mt-5 flex justify-center">
+                            <div className="w-full" >
+                                <FileSelector userData={userData} />
                             </div>
                         </div>
                     }

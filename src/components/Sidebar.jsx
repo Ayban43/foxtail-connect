@@ -8,7 +8,7 @@ import SidebarCloseButton from './UI/SidebarCloseButton';
 import SidebarOpenButton from './UI/SidebarOpenButton';
 
 
-const Sidebar = ({ setToken, isAdmin, toggleSidebar, isSidebarVisible }) => {
+const Sidebar = ({ setToken, isAdmin, toggleSidebar, isSidebarVisible, userData }) => {
   const [showMenuDropDown, setShowMenuDropDown] = useState(false);
   // const [sidebarVisible, setSidebarVisible] = useState(true); // State variable for sidebar visibility
 
@@ -62,7 +62,7 @@ const Sidebar = ({ setToken, isAdmin, toggleSidebar, isSidebarVisible }) => {
 
                     <div className="z-50 absolute right-0 mt-2 w-56 origin-top-right text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
                       <div className="px-4 py-3">
-                        <span className="block text-sm text-gray-900 dark:text-white">Foxtail Financial</span>
+                        <span className="block text-sm font-bold text-gray-900 dark:text-white">{userData.email}</span>
 
                       </div>
                       <ul className="py-2" aria-labelledby="user-menu-button">

@@ -22,8 +22,6 @@ const App = () => {
 
   const [isSidebarVisible, setSidebarVisible] = useState(true);
 
-  console.log("hide slider", isSidebarVisible)
-
   const toggleSidebar = () => {
     setSidebarVisible(!isSidebarVisible);
   };
@@ -92,7 +90,7 @@ const App = () => {
             <Route path={'/'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <Dashboard isAdmin={isAdmin} />
                   </div>
@@ -102,7 +100,7 @@ const App = () => {
             <Route path={'/client'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <Client isAdmin={isAdmin} />
                   </div>
@@ -111,7 +109,7 @@ const App = () => {
             <Route path={'/client/add'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <Add isAdmin={isAdmin} />
                   </div>
@@ -120,7 +118,7 @@ const App = () => {
             <Route path={'/client/edit/:id'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <Edit isAdmin={isAdmin} />
                   </div>
@@ -129,7 +127,7 @@ const App = () => {
             <Route path={'/financial-summary/add'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <AddFinancialSummary isAdmin={isAdmin} />
                   </div>
@@ -138,7 +136,7 @@ const App = () => {
             <Route path={'/financial-summary'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <FinancialSummary isAdmin={isAdmin} />
                   </div>
@@ -147,7 +145,7 @@ const App = () => {
             <Route path={'/financial-summary/edit/:id'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <EditFinancialSummary isAdmin={isAdmin} />
                   </div>
@@ -159,7 +157,7 @@ const App = () => {
             <Route path={'/'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <FinancialSummaryClient />
                   </div>
@@ -169,7 +167,7 @@ const App = () => {
             <Route path={'/financial-summary'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <FinancialSummaryClient />
                   </div>
@@ -179,9 +177,9 @@ const App = () => {
             <Route path={'/on-boarding-checklist'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
-                    <OnBoardingChecklist />
+                    <OnBoardingChecklist userData={userSession} />
                   </div>
                 </div>
               </>}
@@ -190,7 +188,7 @@ const App = () => {
             <Route path={'/financial-summary/:id'} element={
               <>
                 <div className="flex">
-                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} />
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <ViewFinancialSummaryClient />
                   </div>
