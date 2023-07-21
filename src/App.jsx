@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import { Login, Dashboard } from './pages';
 import { Dashboard } from './pages/Dashboard';
-import { Client, Add, Edit } from './pages/Client';
+import { Client, Add, Edit, ClientChecklist } from './pages/Client';
 import { Login } from './pages/Login';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { ErrorPage } from './pages/Error/';
@@ -11,6 +11,7 @@ import { FinancialSummary, AddFinancialSummary, EditFinancialSummary } from './p
 import { FinancialSummaryClient, ViewFinancialSummaryClient } from './pages/FinancialSummaryClient';
 import LoadingSpinner from './components/UI/LoadingSpinner';
 import { OnBoardingChecklist } from './pages/OnBoardingChecklist';
+
 
 const App = () => {
   const navigate = useNavigate()
@@ -121,6 +122,15 @@ const App = () => {
                   <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
                   <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
                     <Edit isAdmin={isAdmin} />
+                  </div>
+                </div>
+              </>} />
+            <Route path={'/client/checklist/:id'} element={
+              <>
+                <div className="flex">
+                  <Sidebar isAdmin={isAdmin} toggleSidebar={toggleSidebar} isSidebarVisible={isSidebarVisible} userData={userSession} />
+                  <div className={isSidebarVisible ? 'flex-grow ml-64' : 'flex-grow'}>
+                    <ClientChecklist isAdmin={isAdmin} />
                   </div>
                 </div>
               </>} />

@@ -10,7 +10,7 @@ import FileSelector from './FileSelector';
 import Selector from './FileSelector';
 
 
-const OnBoardingChecklist = ({ userData }) => {
+const ClientChecklist = ({ userData }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [rowIdToDelete, setRowIdToDelete] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -63,4 +63,4 @@ const OnBoardingChecklist = ({ userData }) => {
     )
 }
 
-export default OnBoardingChecklist
+export default ClientChecklist

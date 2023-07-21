@@ -184,7 +184,7 @@ const PropertyOrEquipmentTransaction = ({ userData }) => {
 
                             <li
                                 key={file.id}
-                                className="transition ease-in-out delay-75 grid grid-rows-6 px-4 pb-4 pt-2 max-w-sm bg-gray-100 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-300 cursor-pointer"
+                                className="transition ease-in-out delay-75 grid grid-rows-6 px-4 pb-4 pt-2 max-w-sm bg-gray-100 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 "
                             >
                                 <div className="grid grid-cols-9 justify-center gap-2 p-1 text-base font-semibold tracking-tight text-gray-900 dark:text-white min-w-0">
 
@@ -208,7 +208,7 @@ const PropertyOrEquipmentTransaction = ({ userData }) => {
                                     </span>
 
                                 </div>
-                                <div className="flex justify-center items-center w-full bg-white row-span-5 rounded-lg"
+                                <div className="flex justify-center items-center w-full bg-white row-span-5 rounded-lg transition-all ease-in delay-75 hover:cursor-pointer hover:scale-105"
                                     onClick={() => {
                                         const fileUrl = `https://jpmefbzznkiwbnscdrvn.supabase.co/storage/v1/object/public/on_boarding_checklist/${userData.email}/documents_related_to_property_or_equipment_transaction/${file.name}`;
                                         window.open(fileUrl, '_blank');

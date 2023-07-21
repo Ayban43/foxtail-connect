@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import Toast from '../../components/UI/Toast'
 
 
-const Add = () => {
+const Add = ({ isAdmin }) => {
     const navigate = useNavigate()
     const [businessName, setBusinessName] = useState('')
     const [contactName, setContactName] = useState('')
